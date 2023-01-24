@@ -1,20 +1,29 @@
 import numpy as np
-import pandas as pd
-import pickle
 import seaborn as sns
-#import pdb; pdb.set_trace()
+import matplotlib.pyplot as plt
 
-arr = np.load('./data/r/EURUSD_M1.npy')[:1000]
-sns.relplot(arr)
+np.set_printoptions(precision=3, linewidth=200)
 
+closes = np.loadtxt('./data/EURUSD_M1.csv', delimiter='\t', skiprows=1, usecols=4)
+diffs = np.diff(closes)
+closes = closes[1:]
 
-#x = np.array(np.arange(0, 10))
-#y = np.expand_dims(np.array(np.arange(0, 20)), 1)
-#Y = x + y
-#
-#ta = np.expand_dims(np.arange(0,20), 1)
-#
-#res = arr[Y]
-#arr[0:10]
+window_size = 10
+n = 20
 
+window = np.array(np.arange(0, window_size))
+n_sequence = np.expand_dims(np.array(np.arange(0, n)), 1)
+indexes = window + n_sequence 
 
+window_start_indexes =  n_sequence * np.ones(window_size, np.int8)
+window_percent_cng = diffs[indexes] / closes[window_start_indexes]
+
+ra = np.arange(0, window_size, 1)
+x = np.array([ra,ra])
+y = np.array([ra,ra*2])
+
+print(x)
+print(y)
+plt.plot(x, y)
+#plt.plot(np.arange(0, window_size, 1), closes[window_start_indexes])
+plt.show()
