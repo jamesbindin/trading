@@ -16,14 +16,9 @@ n_sequence = np.expand_dims(np.array(np.arange(0, n)), 1)
 indexes = window + n_sequence 
 
 window_start_indexes =  n_sequence * np.ones(window_size, np.int8)
-window_percent_cng = diffs[indexes] / closes[window_start_indexes]
+window_percent_cng = (closes[indexes] - closes[window_start_indexes]) / closes[window_start_indexes]
 
-ra = np.arange(0, window_size, 1)
-x = np.array([ra,ra])
-y = np.array([ra,ra*2])
+x = np.tile(np.arange(0, window_size, 1), (n, 1))
 
-print(x)
-print(y)
-plt.plot(x, y)
-#plt.plot(np.arange(0, window_size, 1), closes[window_start_indexes])
+plt.plot(x.T, window_percent_cng.T)
 plt.show()
